@@ -33,9 +33,9 @@
 // put function declarations here:
 
 // declare variables
-int new_value =0;
-int old_value = 0;
-int delta = 0;
+int new_qei_value =0;
+int old_qei_value = 0;
+int qei_delta = 0;
 const u_int PIN_AB = 10;  // encoder A and B outputs connected to GPIO 10 and 11
 const u_int sm = 0;       // state machine 0
 
@@ -51,13 +51,13 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  new_value = quadrature_encoder_get_count(pio, sm);
-  delta = new_value - old_value;
-  old_value = new_value; 
+  new_qei_value = quadrature_encoder_get_count(pio, sm);
+  qei_delta = new_qei_value - old_qei_value;
+  old_qei_value = new_qei_value; 
   Serial.print("Value: ");
-  Serial.print(new_value); 
+  Serial.print(new_qei_value); 
   Serial.print("  Delta: ");
-  Serial.print(delta);
+  Serial.print(qei_delta);
   Serial.println();
   delay(100);
 }
