@@ -28,37 +28,40 @@
 // put function declarations here:
 void qei_debug_serial();
 // declare variables
-int new_qei_value =0;
+int new_qei_value = 0;
 int qei_delta = 0;
-const u_int pin_AB = 10;  // encoder A and B outputs connected to GPIO 10 and 11
+const u_int pin_AB = 10; // encoder A and B outputs connected to GPIO 10 and 11
 const u_int state_machine = 0;
 const int max_step_rate = 0;
 
 // instantiate objects
 PIO pio = pio0;
-QuadratureEncoder qei(pio,state_machine,pin_AB,max_step_rate);
+QuadratureEncoder qei(pio, state_machine, pin_AB, max_step_rate);
 
-void setup() {
+void setup()
+{
   // put your setup code here, to run once:
   Serial.begin(115200);
-    // main encoder
-    qei.init();
+  // main encoder
+  qei.init();
 }
-void loop() {
-    // put your main code here, to run repeatedly:
-    // get main encoder value and delta
-    qei.poll_qei();
-    new_qei_value = qei.new_val;
-    qei_delta = qei.delta;
-    qei_debug_serial();
-    delay(100);
+void loop()
+{
+  // put your main code here, to run repeatedly:
+  // get main encoder value and delta
+  qei.poll_qei();
+  new_qei_value = qei.new_val;
+  qei_delta = qei.delta;
+  qei_debug_serial();
+  delay(100);
 }
-//put function definitions here:
-// qei print to Serial
-void qei_debug_serial() {
-    Serial.print("Main Encoder Value: ");
-    Serial.print(new_qei_value); 
-    Serial.print("  Main Encoder Delta: ");
-    Serial.print(qei_delta); 
-    Serial.println();
+// put function definitions here:
+//  qei print to Serial
+void qei_debug_serial()
+{
+  Serial.print("Main Encoder Value: ");
+  Serial.print(new_qei_value);
+  Serial.print("  Main Encoder Delta: ");
+  Serial.print(qei_delta);
+  Serial.println();
 }

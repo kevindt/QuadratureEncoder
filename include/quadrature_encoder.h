@@ -29,9 +29,11 @@
 #include <Arduino.h>
 #include "quadrature_encoder.pio.h"
 
-class QuadratureEncoder {
+class QuadratureEncoder
+{
 private:
     int old_val;
+
 public:
     PIO pio;
     u_int sm;
@@ -39,26 +41,27 @@ public:
     int max_step_rate;
     int new_val;
     int delta;
-    // constructor  
-    QuadratureEncoder(PIO _pio, u_int _sm, u_int _pin, int _max_step_rate) {
+    // constructor
+    QuadratureEncoder(PIO _pio, u_int _sm, u_int _pin, int _max_step_rate)
+    {
         pio = _pio;
         sm = _sm;
         PIN_AB = _pin;
         max_step_rate = _max_step_rate;
     }
     // public functions
-    void init() {
-        pio_add_program(pio, &quadrature_encoder_program);   
-        quadrature_encoder_program_init(pio, sm, PIN_AB, max_step_rate); 
+    void init()
+    {
+        pio_add_program(pio, &quadrature_encoder_program);
+        quadrature_encoder_program_init(pio, sm, PIN_AB, max_step_rate);
         new_val = 0;
-        delta = 0; 
-        old_val = 0;  
+        delta = 0;
+        old_val = 0;
     }
-    void poll_qei() {
+    void poll_qei()
+    {
         new_val = quadrature_encoder_get_count(pio, sm);
         delta = new_val - old_val;
-        old_val = new_val; 
+        old_val = new_val;
     }
 };
-
-
