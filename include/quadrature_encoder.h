@@ -22,43 +22,43 @@
 // One advantage of this approach is that it requires zero CPU time to keep the
 // encoder count updated and because of that it supports very high step rates.
 //
+// Converted to class QuadratureEncoder.
+//
+#pragma once
+// needs for pio quadrature encoder
+#include <Arduino.h>
+#include "quadrature_encoder.pio.h"
 
-#include "quadrature_encoder.h"
+class QuadratureEncoder {
+private:
+    int old_val;
+public:
+    PIO pio;
+    u_int sm;
+    u_int PIN_AB;
+    int max_step_rate;
+    int new_val;
+    int delta;
+    // constructor  
+    QuadratureEncoder(PIO _pio, u_int _sm, u_int _pin, int _max_step_rate) {
+        pio = _pio;
+        sm = _sm;
+        PIN_AB = _pin;
+        max_step_rate = _max_step_rate;
+    }
+    // public functions
+    void init() {
+        pio_add_program(pio, &quadrature_encoder_program);   
+        quadrature_encoder_program_init(pio, sm, PIN_AB, max_step_rate); 
+        new_val = 0;
+        delta = 0; 
+        old_val = 0;  
+    }
+    void poll_qei() {
+        new_val = quadrature_encoder_get_count(pio, sm);
+        delta = new_val - old_val;
+        old_val = new_val; 
+    }
+};
 
-// put function declarations here:
-void qei_debug_serial();
-// declare variables
-int new_qei_value =0;
-int qei_delta = 0;
-const u_int pin_AB = 10;  // encoder A and B outputs connected to GPIO 10 and 11
-const u_int state_machine = 0;
-const int max_step_rate = 0;
 
-// instantiate objects
-PIO pio = pio0;
-QuadratureEncoder qei(pio,state_machine,pin_AB,max_step_rate);
-
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
-    // main encoder
-    qei.init();
-}
-void loop() {
-    // put your main code here, to run repeatedly:
-    // get main encoder value and delta
-    qei.poll_qei();
-    new_qei_value = qei.new_val;
-    qei_delta = qei.delta;
-    qei_debug_serial();
-    delay(100);
-}
-//put function definitions here:
-// qei print to Serial
-void qei_debug_serial() {
-    Serial.print("Main Encoder Value: ");
-    Serial.print(new_qei_value); 
-    Serial.print("  Main Encoder Delta: ");
-    Serial.print(qei_delta); 
-    Serial.println();
-}
