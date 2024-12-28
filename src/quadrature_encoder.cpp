@@ -30,7 +30,7 @@ void qei_debug_serial();
 // declare variables
 int new_qei_value = 0;
 int qei_delta = 0;
-const u_int pin_AB = 10; // encoder A and B outputs connected to GPIO 10 and 11
+const u_int pin_AB = 4; // encoder A and B outputs connected to GPIO 4 and 5
 const u_int state_machine = 0;
 const int max_step_rate = 0;
 
@@ -53,7 +53,7 @@ void loop()
   new_qei_value = qei.new_val;
   qei_delta = qei.delta;
   qei_debug_serial();
-  delay(100);
+  delay(10);
 }
 // put function definitions here:
 //  qei print to Serial
